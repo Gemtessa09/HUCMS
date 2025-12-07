@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teacher Dashboard - HUCMSS Result System</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Chart.js for charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .active-nav {
+        background-color: #3b82f6;
+        color: white;
+      }
+      .active-nav:hover {
+        background-color: #2563eb;
+      }
+      .sidebar {
+        transition: all 0.3s ease;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.active {
+          transform: translateX(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Mobile Menu Button -->
+    <button
+      id="mobile-menu-button"
+      class="md:hidden fixed top-4 left-4 z-50 bg-blue-600 text-white p-2 rounded-lg"
+    >
+      <i class="fas fa-bars text-xl"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div
+      class="sidebar fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-blue-900 to-blue-800 text-white shadow-xl"
+    >
+      <!-- Logo and Teacher Info -->
+      <div class="p-6 border-b border-blue-700">
+        <div class="flex items-center space-x-3 mb-6">
+          <img src="./images/logo.jpg" alt="HUCMSS Logo" class="h-10 w-auto" />
+          <h1 class="text-lg font-bold">Teacher Portal</h1>
+        </div>
+        <div class="flex items-center space-x-3">
+          <div
+            class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center"
+          >
+            <i class="fas fa-chalkboard-teacher text-xl"></i>
+          </div>
+          <div>
+            <h2 class="font-bold" id="teacher-name">Ms. Sarah Johnson</h2>
+            <p class="text-blue-200 text-sm">Mathematics Dept</p>
+            <p class="text-blue-300 text-xs">ID: TEACH-2024-001</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="p-4">
+        <ul class="space-y-2">
+          <li>
+            <a
+              href="#"
+              onclick="showSection('dashboard')"
+              class="nav-item active-nav flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-700 transition"
+            >
+              <i class="fas fa-tachometer-alt w-6"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onclick="showSection('add-marks')"
+              class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-700 transition"
+            >
+              <i class="fas fa-plus-circle w-6"></i>
+              <span>Add Marks</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onclick="showSection('view-students')"
+              class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-700 transition"
+            >
+              <i class="fas fa-users w-6"></i>
+              <span>View Students</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onclick="showSection('my-subjects')"
+              class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-700 transition"
+            >
+              <i class="fas fa-book w-6"></i>
+              <span>My Subjects</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onclick="showSection('reports')"
+              class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-700 transition"
+            >
+              <i class="fas fa-chart-bar w-6"></i>
+              <span>Reports</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onclick="showSection('announcements')"
+              class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-700 transition"
+            >
+              <i class="fas fa-bullhorn w-6"></i>
+              <span>Announcements</span>
+            </a>
+          </li>
+          <li class="pt-4 border-t border-blue-700">
+            <a
+              href="#"
+              onclick="showSection('profile')"
+              class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-700 transition"
+            >
+              <i class="fas fa-user-cog w-6"></i>
+              <span>Profile Settings</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="index.html"
+              class="flex items-center space-x-3 p-3 rounded-lg hover:bg-red-700 transition text-red-200 hover:text-white"
+            >
+              <i class="fas fa-sign-out-alt w-6"></i>
+              <span>Logout</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Quick Stats -->
+      <div class="p-4 border-t border-blue-700 mt-4">
+        <h3 class="font-bold text-blue-200 text-sm mb-2">Quick Stats</h3>
+        <div class="space-y-2">
+          <div class="flex justify-between">
+            <span class="text-sm">Students:</span>
+            <span class="font-bold" id="total-students">45</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-sm">Subjects:</span>
+            <span class="font-bold" id="total-subjects">4</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-sm">Pending Marks:</span>
+            <span class="font-bold text-yellow-300" id="pending-marks">12</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="md:ml-64 min-h-screen">
+      <!-- Top Bar -->
+      <header class="bg-white shadow-sm border-b p-4">
+        <div class="flex justify-between items-center">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-800" id="page-title">
+              Teacher Dashboard
+            </h1>
+            <p class="text-gray-600" id="page-subtitle">
+              Welcome back! Here's your overview
+            </p>
+          </div>
+          <div class="flex items-center space-x-4">
+            <!-- Notifications -->
+            <div class="relative">
+              <button
+                id="notification-btn"
+                class="p-2 text-gray-600 hover:text-blue-600 relative"
+              >
+                <i class="fas fa-bell text-xl"></i>
+                <span
+                  class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                  >3</span
+                >
+              </button>
+              <!-- Notification Dropdown -->
+              <div
+                id="notification-dropdown"
+                class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border z-50"
+              >
+                <div class="p-4 border-b">
+                  <h3 class="font-bold text-gray-800">Notifications</h3>
+                </div>
+                <div class="max-h-64 overflow-y-auto">
+                  <div class="p-3 border-b hover:bg-gray-50">
+                    <p class="font-medium">New Assignment Submission</p>
+                    <p class="text-sm text-gray-600">
+                      5 students submitted CS101 assignment
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">2 hours ago</p>
+                  </div>
+                  <div class="p-3 border-b hover:bg-gray-50">
+                    <p class="font-medium">Department Meeting</p>
+                    <p class="text-sm text-gray-600">
+                      Meeting scheduled for tomorrow at 10 AM
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">1 day ago</p>
+                  </div>
+                  <div class="p-3 hover:bg-gray-50">
+                    <p class="font-medium">Marks Submission Deadline</p>
+                    <p class="text-sm text-gray-6F00">
+                      Submit final marks by Friday
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">2 days ago</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Date Display -->
+            <div class="hidden md:block text-right">
+              <p class="font-medium" id="current-date">Monday, Dec 9, 2024</p>
+              <p class="text-sm text-gray-600" id="current-time">10:30 AM</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Sections -->
+      <main class="p-4 md:p-6">
+        <!-- Dashboard Section (Default) -->
+        <section id="dashboard-section" class="content-section">
+          <!-- Stats Cards -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+          >
+            <div
+              class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500"
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600">Total Students</p>
+                  <h3 class="text-3xl font-bold text-gray-800">45</h3>
+                </div>
+                <div class="bg-blue-100 p-3 rounded-full">
+                  <i class="fas fa-users text-blue-600 text-2xl"></i>
+                </div>
+              </div>
+              <p class="text-sm text-gray-500 mt-2">Across all subjects</p>
+            </div>
+
+            <div
+              class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500"
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600">Subjects Assigned</p>
+                  <h3 class="text-3xl font-bold text-gray-800">4</h3>
+                </div>
+                <div class="bg-green-100 p-3 rounded-full">
+                  <i class="fas fa-book text-green-600 text-2xl"></i>
+                </div>
+              </div>
+              <p class="text-sm text-gray-500 mt-2">This semester</p>
+            </div>
+
+            <div
+              class="bg-white rounded-xl shadow-md p-6 border-l-4 border-yellow-500"
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600">Pending Marks</p>
+                  <h3 class="text-3xl font-bold text-gray-800">12</h3>
+                </div>
+                <div class="bg-yellow-100 p-3 rounded-full">
+                  <i class="fas fa-tasks text-yellow-600 text-2xl"></i>
+                </div>
+              </div>
+              <p class="text-sm text-gray-500 mt-2">Need to be entered</p>
+            </div>
+
+            <div
+              class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500"
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600">Average Score</p>
+                  <h3 class="text-3xl font-bold text-gray-800">78.5%</h3>
+                </div>
+                <div class="bg-purple-100 p-3 rounded-full">
+                  <i class="fas fa-chart-line text-purple-600 text-2xl"></i>
+                </div>
+              </div>
+              <p class="text-sm text-gray-500 mt-2">Class average</p>
+            </div>
+          </div>
+
+          <!-- Charts and Recent Activity -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Performance Chart -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <h3 class="text-xl font-bold text-gray-800 mb-4">
+                Class Performance
+              </h3>
+              <div class="h-64">
+                <canvas id="performanceChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Recent Marks Added -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <h3 class="text-xl font-bold text-gray-800 mb-4">
+                Recent Marks Added
+              </h3>
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead>
+                    <tr class="bg-gray-50">
+                      <th class="p-3 text-left text-gray-700">Student</th>
+                      <th class="p-3 text-left text-gray-700">Subject</th>
+                      <th class="p-3 text-left text-gray-700">Score</th>
+                      <th class="p-3 text-left text-gray-700">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b hover:bg-gray-50">
+                      <td class="p-3">John Smith</td>
+                      <td class="p-3">MT101</td>
+                      <td class="p-3">
+                        <span
+                          class="bg-green-100 text-green-800 px-2 py-1 rounded"
+                          >85%</span
+                        >
+                      </td>
+                      <td class="p-3 text-gray-600">Dec 8</td>
+                    </tr>
+                    <tr class="border-b hover:bg-gray-50">
+                      <td class="p-3">Emma Wilson</td>
+                      <td class="p-3">MT102</td>
+                      <td class="p-3">
+                        <span
+                          class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded"
+                          >72%</span
+                        >
+                      </td>
+                      <td class="p-3 text-gray-600">Dec 7</td>
+                    </tr>
+                    <tr class="border-b hover:bg-gray-50">
+                      <td class="p-3">Michael Brown</td>
+                      <td class="p-3">MT101</td>
+                      <td class="p-3">
+                        <span class="bg-red-100 text-red-800 px-2 py-1 rounded"
+                          >65%</span
+                        >
+                      </td>
+                      <td class="p-3 text-gray-600">Dec 6</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                      <td class="p-3">Sarah Davis</td>
+                      <td class="p-3">MT103</td>
+                      <td class="p-3">
+                        <span
+                          class="bg-green-100 text-green-800 px-2 py-1 rounded"
+                          >92%</span
+                        >
+                      </td>
+                      <td class="p-3 text-gray-600">Dec 5</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Quick Actions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <a
+                href="#"
+                onclick="showSection('add-marks')"
+                class="p-4 border rounded-lg hover:bg-blue-50 hover:border-blue-300 transition text-center"
+              >
+                <i class="fas fa-plus-circle text-blue-600 text-2xl mb-2"></i>
+                <h4 class="font-medium">Add New Marks</h4>
+                <p class="text-sm text-gray-600">Enter student scores</p>
+              </a>
+              <a
+                href="#"
+                onclick="showSection('view-students')"
+                class="p-4 border rounded-lg hover:bg-green-50 hover:border-green-300 transition text-center"
+              >
+                <i class="fas fa-users text-green-600 text-2xl mb-2"></i>
+                <h4 class="font-medium">View All Students</h4>
+                <p class="text-sm text-gray-600">Browse student list</p>
+              </a>
+              <a
+                href="#"
+                onclick="showSection('reports')"
+                class="p-4 border rounded-lg hover:bg-purple-50 hover:border-purple-300 transition text-center"
+              >
+                <i class="fas fa-download text-purple-600 text-2xl mb-2"></i>
+                <h4 class="font-medium">Generate Report</h4>
+                <p class="text-sm text-gray-600">Export marks sheet</p>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Add Marks Section -->
+        <section id="add-marks-section" class="content-section hidden">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">
+              Add Student Marks
+            </h2>
+
+            <!-- Marks Form -->
+            <form id="marks-form" class="space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-gray-700 font-medium mb-2"
+                    >Select Subject</label
+                  >
+                  <select
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    id="subject-select"
+                  >
+                    <option value="">-- Select Subject --</option>
+                    <option value="math101">Mathematics - Algebra</option>
+                    <option value="math102">Mathematics - Geometry</option>
+                    <option value="math103">Mathematics - Trigonometry</option>
+                    <option value="math104">Mathematics - Calculus</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-gray-700 font-medium mb-2"
+                    >Select Student</label
+                  >
+                  <select
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    id="student-select"
+                  >
+                    <option value="">-- Select Student --</option>
+                    <option value="STU001">STU001 - John Smith</option>
+                    <option value="STU002">STU002 - Emma Wilson</option>
+                    <option value="STU003">STU003 - Michael Brown</option>
+                    <option value="STU004">STU004 - Sarah Davis</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label class="block text-gray-700 font-medium mb-2"
+                    >Assignment Score (30%)</label
+                  >
+                  <input
+                    type="number"
+                    min="0"
+                    max="30"
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="0-30"
+                    id="assignment-score"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-gray-700 font-medium mb-2"
+                    >Midterm Score (30%)</label
+                  >
+                  <input
+                    type="number"
+                    min="0"
+                    max="30"
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="0-30"
+                    id="midterm-score"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-gray-700 font-medium mb-2"
+                    >Final Exam (40%)</label
+                  >
+                  <input
+                    type="number"
+                    min="0"
+                    max="40"
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="0-40"
+                    id="final-score"
+                  />
+                </div>
+              </div>
+
+              <div class="bg-blue-50 p-4 rounded-lg">
+                <div class="flex justify-between items-center">
+                  <div>
+                    <p class="text-gray-600">Total Score</p>
+                    <h3
+                      class="text-3xl font-bold text-blue-700"
+                      id="total-score"
+                    >
+                      0%
+                    </h3>
+                    <p class="text-sm text-gray-600" id="grade-display">
+                      Grade: -
+                    </p>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-sm text-gray-600">Maximum: 100%</p>
+                    <p class="text-sm text-gray-600">Passing: 50%</p>
+                  </div>
+                </div>
+                <div class="mt-2">
+                  <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      id="score-progress"
+                      class="bg-blue-600 h-2 rounded-full"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-gray-700 font-medium mb-2"
+                  >Comments (Optional)</label
+                >
+                <textarea
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  rows="3"
+                  placeholder="Add any comments about the student's performance..."
+                  id="marks-comments"
+                ></textarea>
+              </div>
+
+              <div class="flex space-x-4">
+                <button
+                  type="submit"
+                  class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition"
+                >
+                  <i class="fas fa-save mr-2"></i>Save Marks
+                </button>
+                <button
+                  type="button"
+                  class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg transition"
+                  onclick="resetMarksForm()"
+                >
+                  <i class="fas fa-redo mr-2"></i>Reset
+                </button>
+                <button
+                  type="button"
+                  class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition"
+                  onclick="calculateTotal()"
+                >
+                  <i class="fas fa-calculator mr-2"></i>Calculate Total
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Recent Entries -->
+          <div class="mt-8 bg-white rounded-xl shadow-md p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">
+              Recently Added Marks
+            </h3>
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="bg-gray-50">
+                    <th class="p-3 text-left">Student</th>
+                    <th class="p-3 text-left">Subject</th>
+                    <th class="p-3 text-left">Total</th>
+                    <th class="p-3 text-left">Grade</th>
+                    <th class="p-3 text-left">Date</th>
+                    <th class="p-3 text-left">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-marks-table">
+                  <!-- Will be populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- View Students Section -->
+        <section id="view-students-section" class="content-section hidden">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <div
+              class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6"
+            >
+              <h2 class="text-2xl font-bold text-gray-800">
+                Student Management
+              </h2>
+              <div class="flex space-x-4 mt-4 md:mt-0">
+                <div class="relative">
+                  <input
+                    type="text"
+                    placeholder="Search students..."
+                    class="p-3 border border-gray-300 rounded-lg pl-10 w-full md:w-64"
+                    id="student-search"
+                  />
+                  <i
+                    class="fas fa-search absolute left-3 top-3 text-gray-400"
+                  ></i>
+                </div>
+                <button
+                  class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition"
+                >
+                  <i class="fas fa-download mr-2"></i>Export
+                </button>
+              </div>
+            </div>
+
+            <!-- Student Table -->
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="bg-gray-50">
+                    <th class="p-3 text-left text-gray-700">Student ID</th>
+                    <th class="p-3 text-left text-gray-700">Full Name</th>
+                    <th class="p-3 text-left text-gray-700">Class/Section</th>
+                    <th class="p-3 text-left text-gray-700">Subjects</th>
+                    <th class="p-3 text-left text-gray-700">Avg. Score</th>
+                    <th class="p-3 text-left text-gray-700">Status</th>
+                    <th class="p-3 text-left text-gray-700">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="students-table">
+                  <!-- Will be populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="flex justify-between items-center mt-6">
+              <p class="text-gray-600">
+                Showing <span id="showing-count">1-10</span> of
+                <span id="total-students-count">45</span> students
+              </p>
+              <div class="flex space-x-2">
+                <button class="p-2 border rounded-lg hover:bg-gray-100">
+                  <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="p-2 border rounded-lg bg-blue-600 text-white">
+                  1
+                </button>
+                <button class="p-2 border rounded-lg hover:bg-gray-100">
+                  2
+                </button>
+                <button class="p-2 border rounded-lg hover:bg-gray-100">
+                  3
+                </button>
+                <button class="p-2 border rounded-lg hover:bg-gray-100">
+                  <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Other Sections (My Subjects, Reports, Announcements, Profile) -->
+        <section id="my-subjects-section" class="content-section hidden">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">My Subjects</h2>
+            <!-- Content for My Subjects -->
+          </div>
+        </section>
+
+        <section id="reports-section" class="content-section hidden">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">
+              Reports & Analytics
+            </h2>
+            <!-- Content for Reports -->
+          </div>
+        </section>
+
+        <section id="announcements-section" class="content-section hidden">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Announcements</h2>
+            <!-- Content for Announcements -->
+          </div>
+        </section>
+
+        <section id="profile-section" class="content-section hidden">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">
+              Profile Settings
+            </h2>
+            <!-- Content for Profile -->
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/dashboard.js"></script>
+    <script>
+      // Initialize date and time
+      function updateDateTime() {
+        const now = new Date();
+        const options = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        };
+        document.getElementById("current-date").textContent =
+          now.toLocaleDateString("en-US", options);
+        document.getElementById("current-time").textContent =
+          now.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+      }
+      setInterval(updateDateTime, 60000);
+      updateDateTime();
+
+      // Mobile menu toggle
+      document
+        .getElementById("mobile-menu-button")
+        .addEventListener("click", function () {
+          document.querySelector(".sidebar").classList.toggle("active");
+        });
+
+      // Notification dropdown toggle
+      document
+        .getElementById("notification-btn")
+        .addEventListener("click", function (e) {
+          e.stopPropagation();
+          document
+            .getElementById("notification-dropdown")
+            .classList.toggle("hidden");
+        });
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function (e) {
+        if (
+          !document
+            .getElementById("notification-dropdown")
+            .contains(e.target) &&
+          !document.getElementById("notification-btn").contains(e.target)
+        ) {
+          document
+            .getElementById("notification-dropdown")
+            .classList.add("hidden");
+        }
+      });
+
+      // Navigation function
+      function showSection(sectionId) {
+        // Hide all sections
+        document.querySelectorAll(".content-section").forEach((section) => {
+          section.classList.add("hidden");
+        });
+
+        // Show selected section
+        document
+          .getElementById(sectionId + "-section")
+          .classList.remove("hidden");
+
+        // Update active nav item
+        document.querySelectorAll(".nav-item").forEach((item) => {
+          item.classList.remove("active-nav");
+        });
+
+        // Find and activate corresponding nav item
+        document.querySelectorAll(".nav-item").forEach((item) => {
+          if (item.textContent.includes(sectionId.replace("-", " "))) {
+            item.classList.add("active-nav");
+          }
+        });
+
+        // Update page title
+        const titles = {
+          dashboard: "Teacher Dashboard",
+          "add-marks": "Add Student Marks",
+          "view-students": "View Students",
+          "my-subjects": "My Subjects",
+          reports: "Reports & Analytics",
+          announcements: "Announcements",
+          profile: "Profile Settings",
+        };
+
+        const subtitles = {
+          dashboard: "Welcome back! Here's your overview",
+          "add-marks": "Enter and manage student scores",
+          "view-students": "Browse and manage student records",
+          "my-subjects": "View and manage your assigned subjects",
+          reports: "Generate reports and view analytics",
+          announcements: "View and create announcements",
+          profile: "Manage your account settings",
+        };
+
+        document.getElementById("page-title").textContent = titles[sectionId];
+        document.getElementById("page-subtitle").textContent =
+          subtitles[sectionId];
+
+        // Close mobile menu if open
+        if (window.innerWidth < 768) {
+          document.querySelector(".sidebar").classList.remove("active");
+        }
+
+        // If showing add marks section, initialize form
+        if (sectionId === "add-marks") {
+          initializeMarksForm();
+        }
+
+        // If showing view students section, load students
+        if (sectionId === "view-students") {
+          loadStudentsTable();
+        }
+      }
+
+      // Marks form functionality
+      function initializeMarksForm() {
+        // Load recent marks
+        const recentMarks = [
+          {
+            student: "John Smith",
+            subject: "MT101",
+            total: 85,
+            grade: "A",
+            date: "Dec 8, 2024",
+          },
+          {
+            student: "Emma Wilson",
+            subject: "MT102",
+            total: 72,
+            grade: "B",
+            date: "Dec 7, 2024",
+          },
+          {
+            student: "Michael Brown",
+            subject: "MT101",
+            total: 65,
+            grade: "C",
+            date: "Dec 6, 2024",
+          },
+          {
+            student: "Sarah Davis",
+            subject: "MT103",
+            total: 92,
+            grade: "A+",
+            date: "Dec 5, 2024",
+          },
+        ];
+
+        const tableBody = document.getElementById("recent-marks-table");
+        tableBody.innerHTML = "";
+
+        recentMarks.forEach((mark) => {
+          const row = document.createElement("tr");
+          row.className = "border-b hover:bg-gray-50";
+          row.innerHTML = `
+                    <td class="p-3">${mark.student}</td>
+                    <td class="p-3">${mark.subject}</td>
+                    <td class="p-3"><span class="px-2 py-1 rounded ${
+                      mark.total >= 80
+                        ? "bg-green-100 text-green-800"
+                        : mark.total >= 60
+                        ? "bg-yellow-100 text-yellow-800"
+                        : "bg-red-100 text-red-800"
+                    }">${mark.total}%</span></td>
+                    <td class="p-3 font-medium">${mark.grade}</td>
+                    <td class="p-3 text-gray-600">${mark.date}</td>
+                    <td class="p-3">
+                        <button class="text-blue-600 hover:text-blue-800 mr-3"><i class="fas fa-edit"></i></button>
+                        <button class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      function calculateTotal() {
+        const assignment =
+          parseFloat(document.getElementById("assignment-score").value) || 0;
+        const midterm =
+          parseFloat(document.getElementById("midterm-score").value) || 0;
+        const final =
+          parseFloat(document.getElementById("final-score").value) || 0;
+
+        const total = assignment + midterm + final;
+
+        document.getElementById("total-score").textContent = total + "%";
+        document.getElementById("score-progress").style.width = total + "%";
+
+        // Determine grade
+        let grade = "";
+        if (total >= 90) grade = "A+";
+        else if (total >= 80) grade = "A";
+        else if (total >= 70) grade = "B";
+        else if (total >= 60) grade = "C";
+        else if (total >= 50) grade = "D";
+        else grade = "F";
+
+        document.getElementById("grade-display").textContent =
+          "Grade: " + grade;
+
+        // Change progress bar color based on grade
+        const progressBar = document.getElementById("score-progress");
+        progressBar.className = "h-2 rounded-full";
+        if (total >= 80) progressBar.classList.add("bg-green-600");
+        else if (total >= 60) progressBar.classList.add("bg-yellow-600");
+        else progressBar.classList.add("bg-red-600");
+      }
+
+      function resetMarksForm() {
+        document.getElementById("marks-form").reset();
+        document.getElementById("total-score").textContent = "0%";
+        document.getElementById("score-progress").style.width = "0%";
+        document.getElementById("grade-display").textContent = "Grade: -";
+        document.getElementById("score-progress").className =
+          "bg-blue-600 h-2 rounded-full";
+      }
+
+      // Load students table
+      function loadStudentsTable() {
+        const students = [
+          {
+            id: "STU001",
+            name: "John Smith",
+            class: "CS-4A",
+            subjects: 4,
+            score: 85,
+            status: "Active",
+          },
+          {
+            id: "STU002",
+            name: "Emma Wilson",
+            class: "CS-4A",
+            subjects: 4,
+            score: 72,
+            status: "Active",
+          },
+          {
+            id: "STU003",
+            name: "Michael Brown",
+            class: "CS-4B",
+            subjects: 3,
+            score: 65,
+            status: "Active",
+          },
+          {
+            id: "STU004",
+            name: "Sarah Davis",
+            class: "CS-4A",
+            subjects: 4,
+            score: 92,
+            status: "Active",
+          },
+          {
+            id: "STU005",
+            name: "David Miller",
+            class: "CS-4B",
+            subjects: 3,
+            score: 78,
+            status: "Active",
+          },
+          {
+            id: "STU006",
+            name: "Lisa Anderson",
+            class: "CS-4A",
+            subjects: 4,
+            score: 88,
+            status: "Active",
+          },
+          {
+            id: "STU007",
+            name: "Robert Wilson",
+            class: "CS-4C",
+            subjects: 2,
+            score: 55,
+            status: "At Risk",
+          },
+          {
+            id: "STU008",
+            name: "Maria Garcia",
+            class: "CS-4B",
+            subjects: 3,
+            score: 81,
+            status: "Active",
+          },
+        ];
+
+        const tableBody = document.getElementById("students-table");
+        tableBody.innerHTML = "";
+
+        students.forEach((student) => {
+          const row = document.createElement("tr");
+          row.className = "border-b hover:bg-gray-50";
+          row.innerHTML = `
+                    <td class="p-3 font-medium">${student.id}</td>
+                    <td class="p-3">${student.name}</td>
+                    <td class="p-3">${student.class}</td>
+                    <td class="p-3">${student.subjects}</td>
+                    <td class="p-3">
+                        <div class="flex items-center">
+                            <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                <div class="h-2 rounded-full ${
+                                  student.score >= 80
+                                    ? "bg-green-600"
+                                    : student.score >= 60
+                                    ? "bg-yellow-600"
+                                    : "bg-red-600"
+                                }" style="width: ${student.score}%"></div>
+                            </div>
+                            <span>${student.score}%</span>
+                        </div>
+                    </td>
+                    <td class="p-3">
+                        <span class="px-2 py-1 rounded text-xs font-medium ${
+                          student.status === "Active"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }">
+                            ${student.status}
+                        </span>
+                    </td>
+                    <td class="p-3">
+                        <button class="text-blue-600 hover:text-blue-800 mr-2" title="View Profile"><i class="fas fa-eye"></i></button>
+                        <button class="text-green-600 hover:text-green-800 mr-2" title="Add Marks"><i class="fas fa-plus-circle"></i></button>
+                        <button class="text-purple-600 hover:text-purple-800" title="Message"><i class="fas fa-envelope"></i></button>
+                    </td>
+                `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      // Chart initialization
+      document.addEventListener("DOMContentLoaded", function () {
+        // Performance Chart
+        const ctx = document
+          .getElementById("performanceChart")
+          .getContext("2d");
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            datasets: [
+              {
+                label: "Class Average",
+                data: [65, 70, 72, 75, 78, 80],
+                borderColor: "#3b82f6",
+                backgroundColor: "rgba(59, 130, 246, 0.1)",
+                fill: true,
+                tension: 0.4,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: false,
+                min: 50,
+                max: 100,
+              },
+            },
+          },
+        });
+
+        // Initialize marks form
+        initializeMarksForm();
+        loadStudentsTable();
+
+        // Calculate total when input values change
+        document
+          .getElementById("assignment-score")
+          .addEventListener("input", calculateTotal);
+        document
+          .getElementById("midterm-score")
+          .addEventListener("input", calculateTotal);
+        document
+          .getElementById("final-score")
+          .addEventListener("input", calculateTotal);
+
+        // Form submission
+        document
+          .getElementById("marks-form")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Marks saved successfully!");
+            resetMarksForm();
+            initializeMarksForm(); // Refresh recent marks
+          });
+
+        // Student search functionality
+        document
+          .getElementById("student-search")
+          .addEventListener("input", function (e) {
+            const searchTerm = e.target.value.toLowerCase();
+            // Implement search filtering here
+          });
+      });
+    </script>
+  </body>
+</html>

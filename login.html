@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - HUCMSS Result System</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .role-tab.active {
+        background-color: #3b82f6;
+        color: white;
+      }
+      .login-form {
+        transition: all 0.3s ease-in-out;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-blue-50 to-gray-100 min-h-screen flex flex-col"
+  >
+    <!-- Header -->
+    <header class="py-4 px-6 bg-white shadow-sm">
+      <div class="max-w-6xl mx-auto flex justify-between items-center">
+        <a href="index.html" class="flex items-center space-x-3">
+          <i class="fas fa-arrow-left text-blue-600 text-lg"></i>
+          <span class="text-gray-600 font-medium">Back to Home</span>
+        </a>
+        <div class="text-center">
+          <h1 class="text-2xl font-bold text-gray-800">HUCMSS Result System</h1>
+        </div>
+        <div class="w-24"></div>
+        <!-- Spacer for alignment -->
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex items-center justify-center p-4">
+      <div class="w-full max-w-4xl">
+        <!-- Login Card -->
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+          <div class="md:flex">
+            <!-- Left Side - Welcome/Info -->
+            <div
+              class="md:w-2/5 bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 md:p-12"
+            >
+              <div class="h-full flex flex-col justify-center">
+                <div class="text-center mb-8">
+                  <img
+                    src="/images/logo.jpg"
+                    alt="HUCMSS Logo"
+                    class="h-20 w-auto mx-auto mb-6"
+                  />
+                  <h2 class="text-3xl font-bold mb-4">Welcome Back</h2>
+                  <p class="text-blue-100">
+                    Please select your role and login to access the dashboard
+                  </p>
+                </div>
+
+                <div class="space-y-6 mt-8">
+                  <div class="flex items-start space-x-4">
+                    <div class="bg-white/20 p-3 rounded-full">
+                      <i class="fas fa-shield-alt text-xl"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-lg">Secure Access</h4>
+                      <p class="text-blue-100 text-sm">
+                        Your data is protected with 256-bit encryption
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-start space-x-4">
+                    <div class="bg-white/20 p-3 rounded-full">
+                      <i class="fas fa-clock text-xl"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-lg">24/7 Availability</h4>
+                      <p class="text-blue-100 text-sm">
+                        Access your dashboard anytime, anywhere
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Side - Login Forms -->
+            <div class="md:w-3/5 p-8 md:p-12">
+              <!-- Role Selection Tabs -->
+              <div class="mb-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                  Login to Your Account
+                </h3>
+
+                <div class="flex flex-wrap justify-center gap-2 mb-8">
+                  <button
+                    onclick="switchRole('teacher')"
+                    id="teacher-tab"
+                    class="role-tab active flex flex-col items-center justify-center w-28 h-28 rounded-xl border-2 border-blue-100 bg-blue-50 hover:bg-blue-100 transition-all"
+                  >
+                    <i
+                      class="fas fa-chalkboard-teacher text-3xl text-blue-600 mb-2"
+                    ></i>
+                    <span class="font-semibold text-gray-800">Teacher</span>
+                  </button>
+
+                  <button
+                    onclick="switchRole('student')"
+                    id="student-tab"
+                    class="role-tab flex flex-col items-center justify-center w-28 h-28 rounded-xl border-2 border-green-100 bg-green-50 hover:bg-green-100 transition-all"
+                  >
+                    <i
+                      class="fas fa-user-graduate text-3xl text-green-600 mb-2"
+                    ></i>
+                    <span class="font-semibold text-gray-800">Student</span>
+                  </button>
+
+                  <button
+                    onclick="switchRole('admin')"
+                    id="admin-tab"
+                    class="role-tab flex flex-col items-center justify-center w-28 h-28 rounded-xl border-2 border-purple-100 bg-purple-50 hover:bg-purple-100 transition-all"
+                  >
+                    <i
+                      class="fas fa-user-cog text-3xl text-purple-600 mb-2"
+                    ></i>
+                    <span class="font-semibold text-gray-800">Admin</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Login Forms -->
+              <div id="login-forms">
+                <!-- Teacher Login Form -->
+                <form id="teacher-form" class="login-form">
+                  <div class="mb-6">
+                    <label
+                      for="teacher-email"
+                      class="block text-gray-700 font-medium mb-2"
+                    >
+                      <i class="fas fa-envelope text-blue-500 mr-2"></i>Email
+                      Address
+                    </label>
+                    <input
+                      type="email"
+                      id="teacher-email"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                      placeholder="teacher@hucmss.edu"
+                      required
+                    />
+                  </div>
+
+                  <div class="mb-6">
+                    <label
+                      for="teacher-password"
+                      class="block text-gray-700 font-medium mb-2"
+                    >
+                      <i class="fas fa-lock text-blue-500 mr-2"></i>Password
+                    </label>
+                    <div class="relative">
+                      <input
+                        type="password"
+                        id="teacher-password"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                        placeholder="Enter your password"
+                        required
+                      />
+                      <button
+                        type="button"
+                        class="absolute right-3 top-3 text-gray-500"
+                        onclick="togglePassword('teacher-password')"
+                      >
+                        <i class="fas fa-eye"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="mb-6 flex items-center justify-between">
+                    <div class="flex items-center">
+                      <input
+                        type="checkbox"
+                        id="remember-teacher"
+                        class="mr-2"
+                      />
+                      <label for="remember-teacher" class="text-gray-600"
+                        >Remember me</label
+                      >
+                    </div>
+                    <a
+                      href="#"
+                      class="text-blue-600 hover:text-blue-800 text-sm"
+                      >Forgot password?</a
+                    >
+                  </div>
+
+                  <button
+                    type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 shadow-md hover:shadow-lg"
+                  >
+                    <i class="fas fa-sign-in-alt mr-2"></i>Login as Teacher
+                  </button>
+                </form>
+
+                <!-- Student Login Form -->
+                <form id="student-form" class="login-form hidden">
+                  <div class="mb-6">
+                    <label
+                      for="student-username"
+                      class="block text-gray-700 font-medium mb-2"
+                    >
+                      <i class="fas fa-id-card text-green-500 mr-2"></i>Student
+                      ID / Username
+                    </label>
+                    <input
+                      type="text"
+                      id="student-username"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+                      placeholder="e.g. STU2024001"
+                      required
+                    />
+                  </div>
+
+                  <div class="mb-6">
+                    <label
+                      for="student-password"
+                      class="block text-gray-700 font-medium mb-2"
+                    >
+                      <i class="fas fa-lock text-green-500 mr-2"></i>Password
+                    </label>
+                    <div class="relative">
+                      <input
+                        type="password"
+                        id="student-password"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+                        placeholder="Enter your password"
+                        required
+                      />
+                      <button
+                        type="button"
+                        class="absolute right-3 top-3 text-gray-500"
+                        onclick="togglePassword('student-password')"
+                      >
+                        <i class="fas fa-eye"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="mb-6 flex items-center justify-between">
+                    <div class="flex items-center">
+                      <input
+                        type="checkbox"
+                        id="remember-student"
+                        class="mr-2"
+                      />
+                      <label for="remember-student" class="text-gray-600"
+                        >Remember me</label
+                      >
+                    </div>
+                    <a
+                      href="#"
+                      class="text-green-600 hover:text-green-800 text-sm"
+                      >Forgot password?</a
+                    >
+                  </div>
+
+                  <button
+                    type="submit"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 shadow-md hover:shadow-lg"
+                  >
+                    <i class="fas fa-sign-in-alt mr-2"></i>Login as Student
+                  </button>
+                </form>
+
+                <!-- Admin Login Form -->
+                <form id="admin-form" class="login-form hidden">
+                  <div class="mb-6">
+                    <label
+                      for="admin-email"
+                      class="block text-gray-700 font-medium mb-2"
+                    >
+                      <i class="fas fa-envelope text-purple-500 mr-2"></i>Admin
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="admin-email"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition"
+                      placeholder="admin@hucmss.edu"
+                      required
+                    />
+                  </div>
+
+                  <div class="mb-6">
+                    <label
+                      for="admin-password"
+                      class="block text-gray-700 font-medium mb-2"
+                    >
+                      <i class="fas fa-lock text-purple-500 mr-2"></i>Password
+                    </label>
+                    <div class="relative">
+                      <input
+                        type="password"
+                        id="admin-password"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition"
+                        placeholder="Enter admin password"
+                        required
+                      />
+                      <button
+                        type="button"
+                        class="absolute right-3 top-3 text-gray-500"
+                        onclick="togglePassword('admin-password')"
+                      >
+                        <i class="fas fa-eye"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="mb-6">
+                    <label
+                      for="admin-key"
+                      class="block text-gray-700 font-medium mb-2"
+                    >
+                      <i class="fas fa-key text-purple-500 mr-2"></i>Security
+                      Key (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      id="admin-key"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition"
+                      placeholder="2FA key if enabled"
+                    />
+                  </div>
+
+                  <div class="mb-6 flex items-center">
+                    <input type="checkbox" id="remember-admin" class="mr-2" />
+                    <label for="remember-admin" class="text-gray-600"
+                      >Remember this device</label
+                    >
+                  </div>
+
+                  <button
+                    type="submit"
+                    class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 shadow-md hover:shadow-lg"
+                  >
+                    <i class="fas fa-sign-in-alt mr-2"></i>Login as Admin
+                  </button>
+                </form>
+              </div>
+
+              <!-- Demo Credentials -->
+              <div class="mt-8 pt-6 border-t border-gray-200">
+                <details class="group">
+                  <summary
+                    class="flex justify-between items-center font-medium cursor-pointer text-gray-600"
+                  >
+                    <span>Demo Credentials</span>
+                    <span class="transition group-open:rotate-180">
+                      <i class="fas fa-chevron-down"></i>
+                    </span>
+                  </summary>
+                  <div class="mt-4 space-y-3 text-sm">
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                      <p class="font-medium text-blue-800">Teacher:</p>
+                      <p>Email: teacher@demo.hucmss.edu</p>
+                      <p>Password: teacher123</p>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-lg">
+                      <p class="font-medium text-green-800">Student:</p>
+                      <p>ID: STU2024001</p>
+                      <p>Password: student123</p>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-lg">
+                      <p class="font-medium text-purple-800">Admin:</p>
+                      <p>Email: admin@demo.hucmss.edu</p>
+                      <p>Password: admin123</p>
+                    </div>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Login Help -->
+        <div class="text-center mt-8 text-gray-600">
+          <p>
+            Need help?
+            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium"
+              >Contact Support</a
+            >
+            or call +251900000
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="./js/login.js"></script>
+  </body>
+</html>

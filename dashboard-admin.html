@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - HUCMSS Result System</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Chart.js for charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .active-nav {
+        background-color: #7c3aed;
+        color: white;
+      }
+      .active-nav:hover {
+        background-color: #6d28d9;
+      }
+      .sidebar {
+        transition: all 0.3s ease;
+      }
+      .data-table th {
+        background-color: #f8fafc;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+      }
+      .modal {
+        transition: all 0.3s ease;
+        opacity: 0;
+        visibility: hidden;
+      }
+      .modal.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .modal-content {
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+      }
+      .modal.active .modal-content {
+        transform: scale(1);
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.active {
+          transform: translateX(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Mobile Menu Button -->
+    <button
+      id="mobile-menu-button"
+      class="md:hidden fixed top-4 left-4 z-50 bg-purple-600 text-white p-2 rounded-lg"
+    >
+      <i class="fas fa-bars text-xl"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div
+      class="sidebar fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-purple-900 to-purple-800 text-white shadow-xl"
+    >
+      <!-- Logo and Admin Info -->
+      <div class="p-6 border-b border-purple-700">
+        <div class="flex items-center space-x-3 mb-6">
+          <img src="./images/logo.jpg" alt="HUCMSS Logo" class="h-10 w-auto" />
+          <h1 class="text-lg font-bold">Admin Portal</h1>
+        </div>
+        <div class="flex items-center space-x-3">
+          <div
+            class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center"
+          >
+            <i class="fas fa-user-shield text-xl"></i>
+          </div>
+          <div>
+            <h2 class="font-bold" id="admin-name">Admin User</h2>
+            <p class="text-purple-200 text-sm">System Administrator</p>
+            <p class="text-purple-300 text-xs">ID: ADMIN-2024-001</p>
+            <p class="text-xs mt-1">
+              Last Login: <span class="font-bold">Today, 09:45 AM</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="p-4">
+        <ul class="space-y-2">
+          <li>
+            <a
+              href="#"
+              onclick="showSection('dashboard')"
+              class="nav-item active-nav flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-700 transition"
+            >
+              <i class="fas fa-tachometer-alt w-6"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onclick="showSection('manage-students')"
+              class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-700 transition"
+            >
+              <i class="fas fa-users w-6"></i>
+              <span>Manage Students</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onclick="showSection('manage-teachers')"
+              class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-700 transition"
+            >
+              <i class="fas fa-chalkboard-teacher w-6"></i>
+              <span>Manage Teachers</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onclick="showSection('manage-results')"
+              class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-700 transition"
+            >
+              <i class="fas fa-poll w-6"></i>
+              <span>Manage Results</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onclick="showSection('subjects')"
+              class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-700 transition"
+            >
+              <i class="fas fa-book w-6"></i>
+              <span>Subjects & Courses</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onclick="showSection('departments')"
+              class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-700 transition"
+            >
+              <i class="fas fa-building w-6"></i>
+              <span>Departments</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onclick="showSection('reports')"
+              class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-700 transition"
+            >
+              <i class="fas fa-chart-bar w-6"></i>
+              <span>Reports & Analytics</span>
+            </a>
+          </li>
+          <li class="pt-4 border-t border-purple-700">
+            <a
+              href="#"
+              onclick="showSection('system')"
+              class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-700 transition"
+            >
+              <i class="fas fa-cog w-6"></i>
+              <span>System Settings</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onclick="showSection('audit')"
+              class="nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-700 transition"
+            >
+              <i class="fas fa-history w-6"></i>
+              <span>Audit Logs</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="index.html"
+              class="flex items-center space-x-3 p-3 rounded-lg hover:bg-red-700 transition text-red-200 hover:text-white"
+            >
+              <i class="fas fa-sign-out-alt w-6"></i>
+              <span>Logout</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Quick Stats -->
+      <div class="p-4 border-t border-purple-700 mt-4">
+        <h3 class="font-bold text-purple-200 text-sm mb-2">System Overview</h3>
+        <div class="space-y-2">
+          <div class="flex justify-between">
+            <span class="text-sm">Total Users:</span>
+            <span class="font-bold" id="total-users">156</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-sm">Active Today:</span>
+            <span class="font-bold text-green-300" id="active-users">42</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-sm">Storage Used:</span>
+            <span class="font-bold" id="storage-used">24%</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-sm">System Status:</span>
+            <span class="font-bold text-green-300">✓ Online</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="md:ml-64 min-h-screen">
+      <!-- Top Bar -->
+      <header class="bg-white shadow-sm border-b p-4">
+        <div class="flex justify-between items-center">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-800" id="page-title">
+              Admin Dashboard
+            </h1>
+            <p class="text-gray-600" id="page-subtitle">
+              System overview and management controls
+            </p>
+          </div>
+          <div class="flex items-center space-x-4">
+            <!-- Quick Actions -->
+            <div class="hidden md:flex space-x-2">
+              <button
+                onclick="showModal('add-user-modal')"
+                class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition text-sm"
+              >
+                <i class="fas fa-plus mr-1"></i> Add User
+              </button>
+              <button
+                onclick="showSection('reports')"
+                class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition text-sm"
+              >
+                <i class="fas fa-download mr-1"></i> Generate Report
+              </button>
+            </div>
+
+            <!-- Notification Bell -->
+            <div class="relative">
+              <button
+                id="notification-btn"
+                class="p-2 text-gray-600 hover:text-purple-600 relative"
+              >
+                <i class="fas fa-bell text-xl"></i>
+                <span
+                  class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                  >5</span
+                >
+              </button>
+              <!-- Notification Dropdown -->
+              <div
+                id="notification-dropdown"
+                class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border z-50"
+              >
+                <div class="p-4 border-b">
+                  <h3 class="font-bold text-gray-800">System Notifications</h3>
+                </div>
+                <div class="max-h-64 overflow-y-auto">
+                  <div class="p-3 border-b hover:bg-gray-50">
+                    <p class="font-medium">New User Registration</p>
+                    <p class="text-sm text-gray-600">
+                      2 new students registered today
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">1 hour ago</p>
+                  </div>
+                  <div class="p-3 border-b hover:bg-gray-50">
+                    <p class="font-medium">Pending Approval</p>
+                    <p class="text-sm text-gray-600">
+                      3 teacher accounts awaiting approval
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">3 hours ago</p>
+                  </div>
+                  <div class="p-3 hover:bg-gray-50">
+                    <p class="font-medium">System Backup</p>
+                    <p class="text-sm text-gray-600">
+                      Daily backup completed successfully
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">6 hours ago</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Date Display -->
+            <div class="hidden md:block text-right">
+              <p class="font-medium" id="current-date">Monday, Dec 9, 2024</p>
+              <p class="text-sm text-gray-600" id="current-time">10:30 AM</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Sections -->
+      <main class="p-4 md:p-6">
+        <!-- Dashboard Section (Default) -->
+        <section id="dashboard-section" class="content-section">
+          <!-- Stats Cards -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+          >
+            <div
+              class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500"
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600">Total Students</p>
+                  <h3 class="text-3xl font-bold text-gray-800">1,245</h3>
+                </div>
+                <div class="bg-purple-100 p-3 rounded-full">
+                  <i class="fas fa-user-graduate text-purple-600 text-2xl"></i>
+                </div>
+              </div>
+              <p class="text-sm text-gray-500 mt-2">
+                <span class="text-green-600 font-medium">+12</span> this week
+              </p>
+            </div>
+
+            <div
+              class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500"
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600">Total Teachers</p>
+                  <h3 class="text-3xl font-bold text-gray-800">68</h3>
+                </div>
+                <div class="bg-blue-100 p-3 rounded-full">
+                  <i
+                    class="fas fa-chalkboard-teacher text-blue-600 text-2xl"
+                  ></i>
+                </div>
+              </div>
+              <p class="text-sm text-gray-500 mt-2">
+                <span class="text-green-600 font-medium">+2</span> this month
+              </p>
+            </div>
+
+            <div
+              class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500"
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600">Results Published</p>
+                  <h3 class="text-3xl font-bold text-gray-800">856</h3>
+                </div>
+                <div class="bg-green-100 p-3 rounded-full">
+                  <i class="fas fa-poll text-green-600 text-2xl"></i>
+                </div>
+              </div>
+              <p class="text-sm text-gray-500 mt-2">This semester</p>
+            </div>
+
+            <div
+              class="bg-white rounded-xl shadow-md p-6 border-l-4 border-red-500"
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600">Pending Actions</p>
+                  <h3 class="text-3xl font-bold text-gray-800">23</h3>
+                </div>
+                <div class="bg-red-100 p-3 rounded-full">
+                  <i class="fas fa-tasks text-red-600 text-2xl"></i>
+                </div>
+              </div>
+              <p class="text-sm text-gray-500 mt-2">Requires attention</p>
+            </div>
+          </div>
+
+          <!-- Charts and Recent Activity -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- System Usage Chart -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <h3 class="text-xl font-bold text-gray-800 mb-4">
+                System Usage Overview
+              </h3>
+              <div class="h-64">
+                <canvas id="usageChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Recent Activity</h3>
+                <a
+                  href="#"
+                  onclick="showSection('audit')"
+                  class="text-purple-600 hover:text-purple-800 text-sm font-medium"
+                  >View All →</a
+                >
+              </div>
+              <div class="space-y-4">
+                <div class="flex items-start space-x-3">
+                  <div class="bg-purple-100 p-2 rounded-full">
+                    <i class="fas fa-user-plus text-purple-600"></i>
+                  </div>
+                  <div class="flex-1">
+                    <p class="font-medium">New student registered</p>
+                    <p class="text-sm text-gray-600">
+                      John Doe (ID: STU2024-045)
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">Just now</p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                  <div class="bg-blue-100 p-2 rounded-full">
+                    <i class="fas fa-chalkboard-teacher text-blue-600"></i>
+                  </div>
+                  <div class="flex-1">
+                    <p class="font-medium">Teacher account approved</p>
+                    <p class="text-sm text-gray-600">Dr. Sarah Johnson</p>
+                    <p class="text-xs text-gray-500 mt-1">2 hours ago</p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                  <div class="bg-green-100 p-2 rounded-full">
+                    <i class="fas fa-poll text-green-600"></i>
+                  </div>
+                  <div class="flex-1">
+                    <p class="font-medium">Results batch uploaded</p>
+                    <p class="text-sm text-gray-600">CS101 - 45 records</p>
+                    <p class="text-xs text-gray-500 mt-1">4 hours ago</p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                  <div class="bg-red-100 p-2 rounded-full">
+                    <i class="fas fa-exclamation-triangle text-red-600"></i>
+                  </div>
+                  <div class="flex-1">
+                    <p class="font-medium">System warning</p>
+                    <p class="text-sm text-gray-600">Storage usage at 85%</p>
+                    <p class="text-xs text-gray-500 mt-1">6 hours ago</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Management -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <h3 class="text-lg font-bold text-gray-800 mb-4">
+                Student Management
+              </h3>
+              <div class="space-y-3">
+                <a
+                  href="#"
+                  onclick="showSection('manage-students')"
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-purple-50 transition"
+                >
+                  <span>View All Students</span>
+                  <i class="fas fa-arrow-right text-purple-600"></i>
+                </a>
+                <a
+                  href="#"
+                  onclick="showModal('add-student-modal')"
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-purple-50 transition"
+                >
+                  <span>Add New Student</span>
+                  <i class="fas fa-plus text-green-600"></i>
+                </a>
+                <a
+                  href="#"
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-purple-50 transition"
+                >
+                  <span>Bulk Import</span>
+                  <i class="fas fa-file-import text-blue-600"></i>
+                </a>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <h3 class="text-lg font-bold text-gray-800 mb-4">
+                Teacher Management
+              </h3>
+              <div class="space-y-3">
+                <a
+                  href="#"
+                  onclick="showSection('manage-teachers')"
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-purple-50 transition"
+                >
+                  <span>View All Teachers</span>
+                  <i class="fas fa-arrow-right text-purple-600"></i>
+                </a>
+                <a
+                  href="#"
+                  onclick="showModal('add-teacher-modal')"
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-purple-50 transition"
+                >
+                  <span>Add New Teacher</span>
+                  <i class="fas fa-plus text-green-600"></i>
+                </a>
+                <a
+                  href="#"
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-purple-50 transition"
+                >
+                  <span>Assign Subjects</span>
+                  <i class="fas fa-tasks text-yellow-600"></i>
+                </a>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <h3 class="text-lg font-bold text-gray-800 mb-4">System Tools</h3>
+              <div class="space-y-3">
+                <a
+                  href="#"
+                  onclick="showSection('reports')"
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-purple-50 transition"
+                >
+                  <span>Generate Reports</span>
+                  <i class="fas fa-chart-bar text-purple-600"></i>
+                </a>
+                <a
+                  href="#"
+                  onclick="showModal('backup-modal')"
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-purple-50 transition"
+                >
+                  <span>System Backup</span>
+                  <i class="fas fa-database text-blue-600"></i>
+                </a>
+                <a
+                  href="#"
+                  onclick="showSection('audit')"
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-purple-50 transition"
+                >
+                  <span>View Audit Logs</span>
+                  <i class="fas fa-history text-green-600"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Manage Students Section -->
+        <section id="manage-students-section" class="content-section hidden">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <div
+              class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6"
+            >
+              <div>
+                <h2 class="text-2xl font-bold text-gray-800">
+                  Student Management
+                </h2>
+                <p class="text-gray-600">
+                  Manage all student accounts and information
+                </p>
+              </div>
+              <div class="flex space-x-4 mt-4 md:mt-0">
+                <div class="relative">
+                  <input
+                    type="text"
+                    placeholder="Search students..."
+                    class="p-3 border border-gray-300 rounded-lg pl-10 w-full md:w-64"
+                    id="student-search"
+                  />
+                  <i
+                    class="fas fa-search absolute left-3 top-3 text-gray-400"
+                  ></i>
+                </div>
+                <button
+                  onclick="showModal('add-student-modal')"
+                  class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg transition"
+                >
+                  <i class="fas fa-plus mr-2"></i>Add Student
+                </button>
+                <button
+                  class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition"
+                >
+                  <i class="fas fa-download mr-2"></i>Export
+                </button>
+              </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="mb-6 flex flex-wrap gap-3">
+              <select class="p-2 border border-gray-300 rounded-lg">
+                <option>All Classes</option>
+                <option>Grade 9</option>
+                <option>Grade 10</option>
+                <option>Grade 11</option>
+                <option>Grade 12</option>
+              </select>
+              <select class="p-2 border border-gray-300 rounded-lg">
+                <option>All Sections</option>
+                <option>Section A</option>
+                <option>Section B</option>
+                <option>Section C</option>
+              </select>
+              <select class="p-2 border border-gray-300 rounded-lg">
+                <option>All Status</option>
+                <option>Enrolled</option>
+                <option>Graduated</option>
+                <option>Suspended</option>
+              </select>
+              <button
+                class="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              >
+                Clear Filters
+              </button>
+            </div>
+
+            <!-- Students Table -->
+            <div class="overflow-x-auto">
+              <table class="w-full data-table">
+                <thead>
+                  <tr>
+                    <th class="p-3 text-left text-gray-700">Student ID</th>
+                    <th class="p-3 text-left text-gray-700">Full Name</th>
+                    <th class="p-3 text-left text-gray-700">Grade</th>
+                    <th class="p-3 text-left text-gray-700">Section</th>
+                    <th class="p-3 text-left text-gray-700">Email</th>
+                    <th class="p-3 text-left text-gray-700">Phone</th>
+                    <th class="p-3 text-left text-gray-700">Status</th>
+                    <th class="p-3 text-left text-gray-700">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="students-table">
+                  <!-- Will be populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="flex justify-between items-center mt-6">
+              <p class="text-gray-600">
+                Showing <span id="showing-students">1-10</span> of
+                <span id="total-students">1,245</span> students
+              </p>
+              <div class="flex space-x-2">
+                <button class="p-2 border rounded-lg hover:bg-gray-100">
+                  <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="p-2 border rounded-lg bg-purple-600 text-white">
+                  1
+                </button>
+                <button class="p-2 border rounded-lg hover:bg-gray-100">
+                  2
+                </button>
+                <button class="p-2 border rounded-lg hover:bg-gray-100">
+                  3
+                </button>
+                <button class="p-2 border rounded-lg hover:bg-gray-100">
+                  ...
+                </button>
+                <button class="p-2 border rounded-lg hover:bg-gray-100">
+                  125
+                </button>
+                <button class="p-2 border rounded-lg hover:bg-gray-100">
+                  <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Manage Teachers Section -->
+        <section id="manage-teachers-section" class="content-section hidden">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">
+              Teacher Management
+            </h2>
+            <!-- Teacher management content will be loaded here -->
+            <div class="text-center py-12">
+              <i
+                class="fas fa-chalkboard-teacher text-gray-300 text-6xl mb-4"
+              ></i>
+              <h3 class="text-xl font-medium text-gray-700 mb-2">
+                Teacher Accounts
+              </h3>
+              <p class="text-gray-600">
+                Manage all teacher accounts and assignments
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Manage Results Section -->
+        <section id="manage-results-section" class="content-section hidden">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">
+              Results Management
+            </h2>
+            <!-- Results management content will be loaded here -->
+            <div class="text-center py-12">
+              <i class="fas fa-poll text-gray-300 text-6xl mb-4"></i>
+              <h3 class="text-xl font-medium text-gray-700 mb-2">
+                Results Management
+              </h3>
+              <p class="text-gray-600">Manage and publish student results</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Subjects & Courses Section -->
+        <section id="subjects-section" class="content-section hidden">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">
+              Subjects & Courses
+            </h2>
+            <!-- Subjects content will be loaded here -->
+            <div class="text-center py-12">
+              <i class="fas fa-book text-gray-300 text-6xl mb-4"></i>
+              <h3 class="text-xl font-medium text-gray-700 mb-2">
+                Course Management
+              </h3>
+              <p class="text-gray-600">
+                Manage all subjects and course offerings
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Grades/Sections Section -->
+        <section id="grades-section" class="content-section hidden">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">
+              Grades & Sections
+            </h2>
+            <!-- Grades content will be loaded here -->
+            <div class="text-center py-12">
+              <i class="fas fa-school text-gray-300 text-6xl mb-4"></i>
+              <h3 class="text-xl font-medium text-gray-700 mb-2">
+                Grade & Section Management
+              </h3>
+              <p class="text-gray-600">
+                Manage school grades and student sections
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Reports & Analytics Section -->
+        <section id="reports-section" class="content-section hidden">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">
+              Reports & Analytics
+            </h2>
+            <!-- Reports content will be loaded here -->
+            <div class="text-center py-12">
+              <i class="fas fa-chart-bar text-gray-300 text-6xl mb-4"></i>
+              <h3 class="text-xl font-medium text-gray-700 mb-2">
+                Advanced Analytics
+              </h3>
+              <p class="text-gray-600">
+                Generate detailed reports and analytics
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- System Settings Section -->
+        <section id="system-section" class="content-section hidden">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">
+              System Settings
+            </h2>
+            <!-- System settings content will be loaded here -->
+            <div class="text-center py-12">
+              <i class="fas fa-cog text-gray-300 text-6xl mb-4"></i>
+              <h3 class="text-xl font-medium text-gray-700 mb-2">
+                System Configuration
+              </h3>
+              <p class="text-gray-600">
+                Configure system parameters and settings
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Audit Logs Section -->
+        <section id="audit-section" class="content-section hidden">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Audit Logs</h2>
+            <!-- Audit logs content will be loaded here -->
+            <div class="text-center py-12">
+              <i class="fas fa-history text-gray-300 text-6xl mb-4"></i>
+              <h3 class="text-xl font-medium text-gray-700 mb-2">
+                System Audit Trail
+              </h3>
+              <p class="text-gray-600">
+                View all system activities and changes
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Student Modal -->
+    <div
+      id="add-student-modal"
+      class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+    >
+      <div
+        class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+      >
+        <div class="p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold text-gray-800">Add New Student</h3>
+            <button
+              onclick="closeModal('add-student-modal')"
+              class="text-gray-400 hover:text-gray-600"
+            >
+              <i class="fas fa-times text-2xl"></i>
+            </button>
+          </div>
+
+          <form id="add-student-form" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-gray-700 font-medium mb-2"
+                  >First Name *</label
+                >
+                <input
+                  type="text"
+                  class="w-full p-3 border border-gray-300 rounded-lg"
+                  required
+                />
+              </div>
+              <div>
+                <label class="block text-gray-700 font-medium mb-2"
+                  >Last Name *</label
+                >
+                <input
+                  type="text"
+                  class="w-full p-3 border border-gray-300 rounded-lg"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-gray-700 font-medium mb-2"
+                >Email Address *</label
+              >
+              <input
+                type="email"
+                class="w-full p-3 border border-gray-300 rounded-lg"
+                required
+              />
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-gray-700 font-medium mb-2"
+                  >Student ID *</label
+                >
+                <input
+                  type="text"
+                  class="w-full p-3 border border-gray-300 rounded-lg"
+                  required
+                />
+              </div>
+              <div>
+                <label class="block text-gray-700 font-medium mb-2"
+                  >Phone Number</label
+                >
+                <input
+                  type="tel"
+                  class="w-full p-3 border border-gray-300 rounded-lg"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-gray-700 font-medium mb-2"
+                  >Grade *</label
+                >
+                <select
+                  class="w-full p-3 border border-gray-300 rounded-lg"
+                  required
+                >
+                  <option value="">Select Grade</option>
+                  <option value="9">Grade 9</option>
+                  <option value="10">Grade 10</option>
+                  <option value="11">Grade 11</option>
+                  <option value="12">Grade 12</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-gray-700 font-medium mb-2"
+                  >Section *</label
+                >
+                <select
+                  class="w-full p-3 border border-gray-300 rounded-lg"
+                  required
+                >
+                  <option value="">Select Section</option>
+                  <option value="A">Section A</option>
+                  <option value="B">Section B</option>
+                  <option value="C">Section C</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-gray-700 font-medium mb-2"
+                >Password *</label
+              >
+              <input
+                type="password"
+                class="w-full p-3 border border-gray-300 rounded-lg"
+                required
+              />
+              <p class="text-sm text-gray-500 mt-1">
+                Default password will be sent to student's email
+              </p>
+            </div>
+
+            <div class="flex justify-end space-x-4 pt-6">
+              <button
+                type="button"
+                onclick="closeModal('add-student-modal')"
+                class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg"
+              >
+                <i class="fas fa-save mr-2"></i>Save Student
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Teacher Modal -->
+    <div
+      id="add-teacher-modal"
+      class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+    >
+      <div
+        class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-2xl"
+      >
+        <div class="p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold text-gray-800">Add New Teacher</h3>
+            <button
+              onclick="closeModal('add-teacher-modal')"
+              class="text-gray-400 hover:text-gray-600"
+            >
+              <i class="fas fa-times text-2xl"></i>
+            </button>
+          </div>
+          <p class="text-gray-600 mb-6">
+            Add a new teacher account to the system
+          </p>
+          <div class="text-center py-8">
+            <i
+              class="fas fa-chalkboard-teacher text-gray-300 text-5xl mb-4"
+            ></i>
+            <p class="text-gray-700">
+              Teacher registration form will be implemented here
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/dashboard.js"></script>
+    <script>
+      // Initialize date and time
+      function updateDateTime() {
+        const now = new Date();
+        const options = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        };
+        document.getElementById("current-date").textContent =
+          now.toLocaleDateString("en-US", options);
+        document.getElementById("current-time").textContent =
+          now.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+      }
+      setInterval(updateDateTime, 60000);
+      updateDateTime();
+
+      // Mobile menu toggle
+      document
+        .getElementById("mobile-menu-button")
+        .addEventListener("click", function () {
+          document.querySelector(".sidebar").classList.toggle("active");
+        });
+
+      // Notification dropdown toggle
+      document
+        .getElementById("notification-btn")
+        .addEventListener("click", function (e) {
+          e.stopPropagation();
+          document
+            .getElementById("notification-dropdown")
+            .classList.toggle("hidden");
+        });
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function (e) {
+        if (
+          !document
+            .getElementById("notification-dropdown")
+            .contains(e.target) &&
+          !document.getElementById("notification-btn").contains(e.target)
+        ) {
+          document
+            .getElementById("notification-dropdown")
+            .classList.add("hidden");
+        }
+      });
+
+      // Navigation function
+      function showSection(sectionId) {
+        // Hide all sections
+        document.querySelectorAll(".content-section").forEach((section) => {
+          section.classList.add("hidden");
+        });
+
+        // Show selected section
+        document
+          .getElementById(sectionId + "-section")
+          .classList.remove("hidden");
+
+        // Update active nav item
+        document.querySelectorAll(".nav-item").forEach((item) => {
+          item.classList.remove("active-nav");
+        });
+
+        // Find and activate corresponding nav item
+        document.querySelectorAll(".nav-item").forEach((item) => {
+          const itemText = item.textContent.toLowerCase().replace(/\s+/g, "-");
+          if (itemText.includes(sectionId)) {
+            item.classList.add("active-nav");
+          }
+        });
+
+        // Update page title
+        const titles = {
+          dashboard: "Admin Dashboard",
+          "manage-students": "Manage Students",
+          "manage-teachers": "Manage Teachers",
+          "manage-results": "Manage Results",
+          subjects: "Subjects & Courses",
+          grades: "Grades & Sections",
+          reports: "Reports & Analytics",
+          system: "System Settings",
+          audit: "Audit Logs",
+        };
+
+        const subtitles = {
+          dashboard: "System overview and management controls",
+          "manage-students": "Manage all student accounts and information",
+          "manage-teachers": "Manage teacher accounts and assignments",
+          "manage-results": "Manage and publish student results",
+          subjects: "Manage all subjects and course offerings",
+          departments: "Manage academic departments and programs",
+          reports: "Generate detailed reports and analytics",
+          system: "Configure system parameters and settings",
+          audit: "View all system activities and changes",
+        };
+
+        document.getElementById("page-title").textContent = titles[sectionId];
+        document.getElementById("page-subtitle").textContent =
+          subtitles[sectionId];
+
+        // Close mobile menu if open
+        if (window.innerWidth < 768) {
+          document.querySelector(".sidebar").classList.remove("active");
+        }
+
+        // If showing manage students section, load students
+        if (sectionId === "manage-students") {
+          loadStudentsTable();
+        }
+      }
+
+      // Modal functions
+      function showModal(modalId) {
+        document.getElementById(modalId).classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove("active");
+        document.body.style.overflow = "auto";
+      }
+
+      // Close modal when clicking outside
+      document.querySelectorAll(".modal").forEach((modal) => {
+        modal.addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeModal(this.id);
+          }
+        });
+      });
+      // Load students table
+      function loadStudentsTable() {
+        const students = [
+          {
+            id: "STU2024-001",
+            name: "John Smith",
+            grade: "Grade 12",
+            section: "A",
+            email: "john.smith@student.hucmss.edu",
+            phone: "+1 234 567 8901",
+            status: "Enrolled",
+          },
+          {
+            id: "STU2024-002",
+            name: "Emma Wilson",
+            grade: "Grade 12",
+            section: "A",
+            email: "emma.wilson@student.hucmss.edu",
+            phone: "+1 234 567 8902",
+            status: "Enrolled",
+          },
+          {
+            id: "STU2024-003",
+            name: "Michael Brown",
+            grade: "Grade 11",
+            section: "B",
+            email: "michael.b@student.hucmss.edu",
+            phone: "+1 234 567 8903",
+            status: "Enrolled",
+          },
+          {
+            id: "STU2024-004",
+            name: "Sarah Davis",
+            grade: "Grade 12",
+            section: "A",
+            email: "sarah.davis@student.hucmss.edu",
+            phone: "+1 234 567 8904",
+            status: "Enrolled",
+          },
+          {
+            id: "STU2024-005",
+            name: "David Miller",
+            grade: "Grade 10",
+            section: "C",
+            email: "david.m@student.hucmss.edu",
+            phone: "+1 234 567 8905",
+            status: "Inactive",
+          },
+          {
+            id: "STU2024-006",
+            name: "Lisa Anderson",
+            grade: "Grade 11",
+            section: "B",
+            email: "lisa.a@student.hucmss.edu",
+            phone: "+1 234 567 8906",
+            status: "Enrolled",
+          },
+          {
+            id: "STU2024-007",
+            name: "Robert Wilson",
+            grade: "Grade 10",
+            section: "A",
+            email: "robert.w@student.hucmss.edu",
+            phone: "+1 234 567 8907",
+            status: "Suspended",
+          },
+          {
+            id: "STU2024-008",
+            name: "Maria Garcia",
+            grade: "Grade 10",
+            section: "C",
+            email: "maria.g@student.hucmss.edu",
+            phone: "+1 234 567 8908",
+            status: "Enrolled",
+          },
+          {
+            id: "STU2024-009",
+            name: "James Taylor",
+            grade: "Grade 12",
+            section: "B",
+            email: "james.t@student.hucmss.edu",
+            phone: "+1 234 567 8909",
+            status: "Enrolled",
+          },
+          {
+            id: "STU2024-010",
+            name: "Jennifer Lee",
+            grade: "Grade 11",
+            section: "C",
+            email: "jennifer.l@student.hucmss.edu",
+            phone: "+1 234 567 8910",
+            status: "Enrolled",
+          },
+        ];
+
+        const tableBody = document.getElementById("students-table");
+        tableBody.innerHTML = "";
+
+        students.forEach((student) => {
+          const row = document.createElement("tr");
+          row.className = "border-b hover:bg-gray-50";
+
+          // Determine status color
+          let statusClass = "";
+          let statusText = "";
+          if (student.status === "Active") {
+            statusClass = "bg-green-100 text-green-800";
+            statusText = "Active";
+          } else if (student.status === "Inactive") {
+            statusClass = "bg-gray-100 text-gray-800";
+            statusText = "Inactive";
+          } else {
+            statusClass = "bg-red-100 text-red-800";
+            statusText = "Suspended";
+          }
+
+          row.innerHTML = `
+                    <td class="p-3 font-medium">${student.id}</td>
+<td class="p-3">${student.name}</td>
+<td class="p-3">${student.grade}</td>
+<td class="p-3">${student.section}</td>
+<td class="p-3">${student.email}</td>
+<td class="p-3">${student.phone}</td>
+<td class="p-3">
+
+                        <span class="px-2 py-1 rounded text-xs font-medium ${statusClass}">
+                            ${statusText}
+                        </span>
+                    </td>
+                    <td class="p-3">
+                        <div class="flex space-x-2">
+                            <button class="text-blue-600 hover:text-blue-800" title="View">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="text-green-600 hover:text-green-800" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="text-purple-600 hover:text-purple-800" title="Reset Password">
+                                <i class="fas fa-key"></i>
+                            </button>
+                            <button class="text-red-600 hover:text-red-800" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      // Chart initialization
+      document.addEventListener("DOMContentLoaded", function () {
+        // Usage Chart
+        const ctx = document.getElementById("usageChart").getContext("2d");
+        new Chart(ctx, {
+          type: "doughnut",
+          data: {
+            labels: ["Students", "Teachers", "Admins", "Staff"],
+            datasets: [
+              {
+                data: [1245, 68, 12, 24],
+                backgroundColor: [
+                  "rgba(124, 58, 237, 0.8)",
+                  "rgba(59, 130, 246, 0.8)",
+                  "rgba(16, 185, 129, 0.8)",
+                  "rgba(245, 158, 11, 0.8)",
+                ],
+                borderColor: [
+                  "rgb(124, 58, 237)",
+                  "rgb(59, 130, 246)",
+                  "rgb(16, 185, 129)",
+                  "rgb(245, 158, 11)",
+                ],
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        });
+
+        // Load students table on page load
+        loadStudentsTable();
+
+        // Search functionality
+        document
+          .getElementById("student-search")
+          .addEventListener("input", function (e) {
+            const searchTerm = e.target.value.toLowerCase();
+            // Implement search filtering here
+          });
+
+        // Form submissions
+        document
+          .getElementById("add-student-form")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Student added successfully!");
+            closeModal("add-student-modal");
+            loadStudentsTable(); // Refresh table
+          });
+      });
+    </script>
+  </body>
+</html>
