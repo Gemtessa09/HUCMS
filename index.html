@@ -21,28 +21,26 @@
     <!-- Navigation/Header -->
     <header class="py-6 px-4 md:px-8">
       <div class="max-w-6xl mx-auto">
-        <!-- Logo and Title Row -->
-        <div class="flex items-center justify-between mb-8">
+        <!-- Flex wrapper -->
+        <div
+          class="flex flex-col md:flex-row md:items-center md:justify-between gap-6"
+        >
+          <!-- Logo + Title -->
           <div class="flex items-center space-x-4">
-            <!-- Logo -->
             <img
               src="./images/logo.jpg"
               alt="HUCMSS Logo"
-              class="h-16 w-16 md:h-20 md:w-20 rounded-lg shadow-md border-2 border-white"
+              class="h-14 w-14 md:h-20 md:w-20 rounded-lg shadow-md border-2 border-white"
             />
-            <!-- System Title -->
             <div>
-              <h1 class="text-2xl md:text-3xl font-bold text-blue-800">
-                HUCMSS Student Result System
+              <h1 class="text-xl md:text-3xl font-bold text-blue-800">
+                HUCMSS Student Result Management System
               </h1>
-              <p class="text-sm md:text-base text-gray-600">
-                Hawassa University Community Model Secondary School
-              </p>
             </div>
           </div>
 
           <!-- Login Button -->
-          <div>
+          <div class="flex md:block justify-center">
             <a
               href="login.html"
               class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105 flex items-center space-x-2"
@@ -493,21 +491,28 @@
     </main>
 
     <!-- Footer -->
+    <!-- Footer -->
     <footer
       class="bg-gradient-to-r from-gray-900 to-blue-900 text-white py-12 mt-12"
     >
       <div class="max-w-6xl mx-auto px-4 md:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div
+          class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left"
+        >
+          <!-- Column 1 -->
           <div>
-            <div class="flex items-center space-x-3 mb-4">
+            <div
+              class="flex flex-col items-center md:items-start space-y-3 mb-4"
+            >
               <img
                 src="./images/logo.jpg"
                 alt="HUCMSS Logo"
                 class="h-12 w-12 rounded-lg"
               />
               <div>
-                <h3 class="text-xl font-bold">HUCMSS</h3>
-                <p class="text-sm text-gray-300">Result System</p>
+                <h3 class="text-xl font-bold">
+                  HUCMSS Result Management System
+                </h3>
               </div>
             </div>
             <p class="text-gray-400 text-sm">
@@ -515,12 +520,13 @@
             </p>
           </div>
 
+          <!-- Column 2 -->
           <div>
             <h4 class="text-lg font-bold mb-4">Quick Links</h4>
             <ul class="space-y-2 text-gray-400">
               <li><a href="#" class="hover:text-white transition">Home</a></li>
               <li>
-                <a href="#" class="hover:text-white transition">About school</a>
+                <a href="#" class="hover:text-white transition">About School</a>
               </li>
               <li>
                 <a href="#" class="hover:text-white transition"
@@ -533,6 +539,7 @@
             </ul>
           </div>
 
+          <!-- Column 3 -->
           <div>
             <h4 class="text-lg font-bold mb-4">Resources</h4>
             <ul class="space-y-2 text-gray-400">
@@ -555,10 +562,11 @@
             </ul>
           </div>
 
+          <!-- Column 4 -->
           <div>
             <h4 class="text-lg font-bold mb-4">Contact Info</h4>
             <ul class="space-y-2 text-gray-400">
-              <li class="flex items-center">
+              <li class="flex justify-center md:justify-start items-center">
                 <svg
                   class="w-4 h-4 mr-2"
                   fill="currentColor"
@@ -567,12 +575,11 @@
                   <path
                     fill-rule="evenodd"
                     d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                    clip-rule="evenodd"
-                  ></path>
+                  />
                 </svg>
-                123 School Road, school City
+                123 School Road, School City
               </li>
-              <li class="flex items-center">
+              <li class="flex justify-center md:justify-start items-center">
                 <svg
                   class="w-4 h-4 mr-2"
                   fill="currentColor"
@@ -580,11 +587,11 @@
                 >
                   <path
                     d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"
-                  ></path>
+                  />
                 </svg>
                 +25190000
               </li>
-              <li class="flex items-center">
+              <li class="flex justify-center md:justify-start items-center">
                 <svg
                   class="w-4 h-4 mr-2"
                   fill="currentColor"
@@ -603,14 +610,15 @@
           </div>
         </div>
 
+        <!-- Bottom Bar -->
         <div class="border-t border-gray-800 mt-8 pt-8 text-center">
           <p class="text-gray-400">
-            © <span id="current-year">2024</span> HUCMSS Student Result System.
-            All rights reserved.
+            © <span id="current-year">2024</span> HUCMSS Student Result
+            Management System. All rights reserved.
           </p>
           <p class="text-gray-500 text-sm mt-2">
-            Designed for academic excellence and innovation in education.
-            <br />By Anna Desalegn
+            Designed for academic excellence and innovation in education.<br />
+            <b>Developed by Anna Desalegn</b>
           </p>
         </div>
       </div>
